@@ -1,2 +1,2 @@
 #! /bin/bash
-make BR2_EXTERNAL=$PWD -C buildroot $@
+make O=$PWD/output BR2_EXTERNAL=$PWD -C buildroot -j$(nproc) $@
