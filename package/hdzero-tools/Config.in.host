@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HOST_HDZERO_TOOLS
+	bool "host hdzero-tools"
+	help
+		tools to generate hdzero goggle images
