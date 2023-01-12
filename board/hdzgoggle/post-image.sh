@@ -5,7 +5,7 @@ BOARD_DIR="$(dirname $0)"
 
 pushd $BINARIES_DIR
 
-/home/hanfer/src/github.com/bkleiner/hdzero-full-sdk/tools/pack-bintools/src/u_boot_env_gen $BOARD_DIR/env.cfg env.fex
+hdz-u_boot_env_gen $BOARD_DIR/env.cfg env.fex
 
 KERNEL_SIZE=$(stat -c%s uImage)
 ROOTFS_SIZE=$(stat -c%s rootfs.squashfs)
