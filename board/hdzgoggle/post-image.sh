@@ -5,7 +5,7 @@ BOARD_DIR="$(dirname $0)"
 
 pushd $BINARIES_DIR
 
-hdz-u_boot_env_gen $BOARD_DIR/env.cfg env.fex
+hdz-u_boot_env_gen $BOARD_DIR/image/env.cfg env.fex
 
 KERNEL_SIZE=$(stat -c%s uImage)
 ROOTFS_SIZE=$(stat -c%s rootfs.squashfs)
@@ -43,7 +43,10 @@ unix2dos mbr.fex
 hdz-script mbr.fex
 hdz-update_mbr mbr.bin 1 mbr.fex
 
-cp -v $BOARD_DIR/*.fex .
+cp -v $BOARD_DIR/image/*.fex .
+
+cp -v $BOARD_DIR/image/boot_package.cfg .
+hdz-dragonsecboot -pack boot_package.cfg
 popd
 
 support/scripts/genimage.sh -c $BOARD_DIR/genimage.cfg
