@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+    echo "aww reg val"
+    echo "not enough params!"
+    exit 0
+fi
+
+cd /sys/class/sunxi_dump
+echo $1 $2 > write
+echo $1 > dump
+val=$(cat dump)
+
+echo "write $1 $2 > $val"

@@ -1,0 +1,128 @@
+#!/bin/sh
+
+if [ $# == 0 ]; then
+    echo "dispw -[i,l,a,s,d]"
+    echo "no params!"
+    exit 0
+
+elif [ $1 = "-i" ]; then
+    insmod /mnt/app/ko/disp.ko
+    mount -t debugfs none /sys/kernel/debug
+
+elif [ $1 = "-l" ]; then
+    insmod /mnt/app/ko/vdpo.ko
+
+elif [ $1 = "-a" ]; then
+    gpior PD DRV0
+    gpior PD DRV1
+    cat /sys/class/disp/disp/attr/sys
+
+elif [ $1 = "-x" ]; then
+#    gpior PD DRV0
+#    gpior PD DRV1
+   aww 0x07000160 0x083f10b7
+   insmod /mnt/app/ko/disp.ko
+   mount -t debugfs none /sys/kernel/debug
+#    gpiow PD DRV0 0
+#    gpiow PD DRV1 0x10
+    insmod /mnt/app/ko/vdpo.ko
+    cat /sys/class/disp/disp/attr/sys
+
+elif [ $1 = "-d" ]; then
+    if [ $# -lt 3 ]; then
+        echo "dispw -d drv level"
+        echo "not enough params!"
+        exit 0
+    fi
+
+    level0=0x55555555
+    level1=0x00001555
+    if [ $3 == 0 ]; then
+        level0=0x00000000
+        level1=0x00000000
+    elif [ $3 == 1 ]; then
+		level0=0x55555555
+		level1=0x00001555
+    elif [ $3 == 2 ]; then
+		level0=0xAAAAAAAA
+		level1=0x00002AAA
+    elif [ $3 == 3 ]; then
+		level0=0xFFFFFFFF
+		level1=0x00003FFF
+    else
+		echo "unknown level: $3"
+        echo "level: [0,1,2,3]"
+        exit 0
+    fi
+
+    drvx=$2
+    level=$level0
+    if [ $2 = "DRV0" ]; then
+        drvx=$2
+        level=$level0
+    elif [ $2 = "DRV1" ]; then
+        drvx=$2
+        level=$level1
+    else
+		echo "unknown drv: $2"
+        echo "drv: [DRV0,DRV1]"
+        exit 0
+    fi
+
+    gpiow PD $drvx $level
+
+elif [ $1 = "-s" ]; then
+    if [ $# -lt 3 ]; then
+        echo "dispw -s output format"
+        echo "not enough params!"
+        exit 0
+    fi
+
+    output=16
+    format=2
+
+    if [ $2 = "lcd" ]; then
+        output=1
+    elif [ $2 = "hdmi" ]; then
+        output=4
+    elif [ $2 = "vdpo" ]; then
+        output=16
+	else
+		echo "unknown output: $2"
+        echo "output: [lcd,hdmi,vdpo]"
+        exit 0
+    fi
+
+    if [ $3 = "720p30" ]; then
+        format=69
+    elif [ $3 = "720p50" ]; then
+        format=4
+    elif [ $3 = "720p60" ]; then
+        format=5
+    elif [ $3 = "720p90" ]; then
+        format=70
+    elif [ $3 = "1080p30" ]; then
+        format=27
+    elif [ $3 = "1080p50" ]; then
+        format=9
+    elif [ $3 = "1080p60" ]; then
+        format=10
+    elif [ $3 = "480p" ]; then
+        format=2
+    elif [ $3 = "576p" ]; then
+        format=3
+    else
+        echo "unknown format: $3"
+        echo "format: [480p,576p,720p30,720p50,720p60,1080p30,1080p50,1080p60]"
+        exit 0
+    fi
+    
+    cd /sys/kernel/debug/dispdbg
+    echo disp0 > name;
+    echo switch > command;
+    echo ${output} ${format} > param;
+    echo 1 > start;
+
+else
+    echo "invalid param!"
+fi;

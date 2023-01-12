@@ -1,0 +1,94 @@
+#!/bin/sh
+
+if [ $# -lt 3 ]; then
+	echo "gpiow port reg val"
+    echo "not enough params!"
+    for i in "$@"; do
+        echo $i
+    done
+    exit 0
+fi
+
+base=0x0300B000
+port=2
+reg=0
+
+if [ $1 = "PC" ]; then
+    port=2
+elif [ $1 = "PD" ]; then
+    port=3
+elif [ $1 = "PE" ]; then
+    port=4
+elif [ $1 = "PF" ]; then
+    port=5
+elif [ $1 = "PG" ]; then
+    port=6
+elif [ $1 = "PH" ]; then
+    port=7
+elif [ $1 = "PI" ]; then
+    port=8
+elif [ $1 = "PL" ]; then
+    base=0x07022000
+    port=0
+else
+    echo "invalid port: $1"
+    exit 1
+fi
+
+if [ $2 = "CFG0" ]; then
+    reg=$((${port}\*0x0024+0x00))
+elif [ $2 = "CFG1" ]; then
+    reg=$((${port}\*0x0024+0x04))
+elif [ $2 = "CFG2" ]; then
+    reg=$((${port}\*0x0024+0x08))
+elif [ $2 = "CFG3" ]; then
+    reg=$((${port}\*0x0024+0x0C))
+elif [ $2 = "DAT" ]; then
+    reg=$((${port}\*0x0024+0x10))
+elif [ $2 = "DRV0" ]; then
+    reg=$((${port}\*0x0024+0x14))
+elif [ $2 = "DRV1" ]; then
+    reg=$((${port}\*0x0024+0x18))
+elif [ $2 = "PUL0" ]; then
+    reg=$((${port}\*0x0024+0x1C))
+elif [ $2 = "PUL1" ]; then
+    reg=$((${port}\*0x0024+0x20))
+elif [ $2 = "INT_CFG0" ]; then
+    reg=$((0x200+${port}*0x20+0x00))
+elif [ $2 = "INT_CFG1" ]; then
+    reg=$((0x200+${port}*0x20+0x04))
+elif [ $2 = "INT_CFG2" ]; then
+    reg=$((0x200+${port}*0x20+0x08))
+elif [ $2 = "INT_CFG3" ]; then
+    reg=$((0x200+${port}*0x20+0x0C))
+elif [ $2 = "INT_CTL" ]; then
+    reg=$((0x200+${port}*0x20+0x10))
+elif [ $2 = "INT_STA" ]; then
+    reg=$((0x200+${port}*0x20+0x14))
+elif [ $2 = "INT_DEB" ]; then
+    reg=$((0x200+${port}*0x20+0x18))
+elif [ $2 = "PIO_POW_MOD_SEL" ]; then
+    reg=$((0x340))
+elif [ $2 = "PIO_POW_MS_CTL" ]; then
+    reg=$((0x344))
+elif [ $2 = "PIO_POW_VAL" ]; then
+    reg=$((0x348))
+else
+    echo "invalid reg: $2"
+    exit 2
+fi
+
+dec2hex(){
+    printf "%x" $1
+}
+
+#echo base=${base}
+#echo reg=0x$(dec2hex $reg)
+
+val=$3
+reg=$((${base}+${reg}))
+reg=$(dec2hex $reg)
+#echo addr=0x$reg
+#echo val=$val
+
+aww $reg $val
