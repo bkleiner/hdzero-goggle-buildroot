@@ -16,7 +16,9 @@ load_modules() {
 start_hdzero() {
     printf "Starting hdzero: "
     load_modules
-    # sleep 5 && /mnt/app/script/rc.sh &
+    sleep 1
+    /mnt/app/script/rc.sh
+    sleep 1
     echo "OK"
 }
 
