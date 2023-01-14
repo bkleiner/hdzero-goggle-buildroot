@@ -10,6 +10,7 @@ load_modules() {
     modprobe imx415_mipi
     insmod /mnt/app/ko/hdzero.ko
     modprobe vin_v4l2
+    modprobe sunxi-wlan 
 }
 
 start_hdzero() {
