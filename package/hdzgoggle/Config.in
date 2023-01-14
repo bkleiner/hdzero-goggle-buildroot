@@ -2,3 +2,5 @@ config BR2_PACKAGE_HDZGOGGLE
 	bool "hdzgoggle"
 	help
 		hdzero goggle application
+	select BR2_PACKAGE_ALSA_UTILS
+	select BR2_PACKAGE_ALSA_UTILS_AMIXER
