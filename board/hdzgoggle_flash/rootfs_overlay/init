@@ -1,0 +1,18 @@
+#!/bin/sh
+set -ex
+
+# mount overlay
+mount -t jffs2 /dev/mtdblock4 /mnt/app
+mount -t jffs2 /dev/mtdblock5 /overlay
+mkdir -p /overlay/upper
+mkdir -p /overlay/work
+
+# move root
+mount -t overlay overlay -o rw,noatime,lowerdir=/,upperdir=/overlay/upper,workdir=/overlay/work /mnt
+pivot_root /mnt /mnt/rom
+
+mount -n /rom/dev -o noatime,move /dev
+mount -n /rom/overlay -o noatime,move /overlay
+mount -n /rom/mnt/app -o noatime,move /mnt/app
+
+exec /linuxrc

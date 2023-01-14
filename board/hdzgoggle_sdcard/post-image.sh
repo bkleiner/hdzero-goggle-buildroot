@@ -2,15 +2,17 @@
 set -ex
 
 BOARD_DIR="$(dirname $0)"
+COMMON_BOARD_DIR="$(dirname $0)/../hdzgoggle_common"
 
 pushd $BINARIES_DIR
 
-hdz-u_boot_env_gen $BOARD_DIR/image/env.cfg env.fex
+cp -v $BOARD_DIR/image/*.fex .
+hdz-u_boot_env_gen $BOARD_DIR/env.cfg env.fex
 
 KERNEL_SIZE=$(stat -c%s uImage)
 ROOTFS_SIZE=$(stat -c%s rootfs.ext2)
 ENV_SIZE=$(stat -c%s env.fex)
-APP_SIZE=$(stat -c%s app.fex)
+APP_SIZE=$(stat -c%s app.squashfs)
 
 cat > mbr.fex << EOF
 [mbr]
@@ -43,9 +45,6 @@ unix2dos mbr.fex
 hdz-script mbr.fex
 hdz-update_mbr mbr.bin 1 mbr.fex
 
-cp -v $BOARD_DIR/image/*.fex .
-
-cp -v $BOARD_DIR/image/boot_package.cfg .
 hdz-dragonsecboot -pack boot_package.cfg
 popd
 
