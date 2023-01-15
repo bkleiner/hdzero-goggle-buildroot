@@ -1,0 +1,6 @@
+#!/bin/sh
+
+[ -z "$IF_WPA_CONF" ] && exit 0
+
+echo "Disabling power save for $IFACE"
+iw "$IFACE" set power_save off > /dev/null 2>&1

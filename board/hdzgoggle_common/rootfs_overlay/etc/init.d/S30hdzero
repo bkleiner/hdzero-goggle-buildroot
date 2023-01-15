@@ -17,8 +17,9 @@ start_hdzero() {
     printf "Starting hdzero: "
     load_modules
     sleep 1
-    /mnt/app/script/rc.sh
+    /mnt/app/script/rc.sh > /dev/null 2>&1
     sleep 1
+    modprobe xradio_wlan 
     echo "OK"
 }
 
