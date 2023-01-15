@@ -1,0 +1,42 @@
+name: Build Firmware
+
+on: [push, pull_request]
+
+jobs:
+  build-flash:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build
+        run: |
+          bash build.sh hdzgoggle_flash_defconfig
+          bash build.sh -j4
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: flash.img
+          path: output/images/flash.img
+
+  build-sdcard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build
+        run: |
+          bash build.sh hdzgoggle_sdcard_defconfig
+          bash build.sh -j4
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sdcard.img
+          path: output/images/sdcard.img
