@@ -1,0 +1,14 @@
+#!/bin/sh
+MOUNTPOINT=/mnt/extsd
+
+case $ACTION in
+remove)
+        /bin/umount $MOUNTPOINT || true
+        ;;
+*)
+        /bin/mkdir $MOUNTPOINT > /dev/null 2>&1 || true
+        /bin/mount -o sync -o noatime -o nodiratime /dev/$MDEV $MOUNTPOINT > /dev/null 2>&1 || true
+        ;;
+esac
+
+exit 0

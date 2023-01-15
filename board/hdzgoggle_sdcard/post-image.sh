@@ -3,6 +3,7 @@ set -ex
 
 BOARD_DIR="$(dirname $0)"
 COMMON_BOARD_DIR="$(dirname $0)/../hdzgoggle_common"
+source $COMMON_BOARD_DIR/functions.sh
 
 pushd $BINARIES_DIR
 
