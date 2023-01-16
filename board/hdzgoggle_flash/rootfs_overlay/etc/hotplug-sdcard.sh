@@ -3,7 +3,7 @@ MOUNTPOINT=/mnt/extsd
 
 case $ACTION in
 remove)
-        /bin/umount $MOUNTPOINT || true
+        /bin/umount -l $MOUNTPOINT || true
         ;;
 *)
         /bin/mkdir $MOUNTPOINT > /dev/null 2>&1 || true

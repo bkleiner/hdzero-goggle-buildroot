@@ -9,6 +9,8 @@ source $COMMON_BOARD_DIR/functions.sh
 mkdir -p $TARGET_DIR/rom
 mkdir -p $TARGET_DIR/overlay
 mkdir -p $TARGET_DIR/mnt/app
+mkdir -p $TARGET_DIR/mnt/UDISK
+mkdir -p $TARGET_DIR/mnt/extsd
 
 ensure_line "mmcblk([0-9]+)          root:root       660     */etc/hotplug-sdcard.sh" "$TARGET_DIR/etc/mdev.conf"
 ensure_line "mmcblk([0-9]+)p([0-9]+) root:root       660     */etc/hotplug-sdcard.sh" "$TARGET_DIR/etc/mdev.conf"

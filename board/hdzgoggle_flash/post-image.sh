@@ -1,18 +1,11 @@
 #!/bin/bash
 set -ex
 
+FLASH_SIZE=33554432
+
 BOARD_DIR="$(dirname $0)"
 COMMON_BOARD_DIR="$(dirname $0)/../hdzgoggle_common"
 source $COMMON_BOARD_DIR/functions.sh
-
-function align_size() {
-    local SIZE=$1
-    if (($SIZE % 65536 != 0)); then
-        SIZE=$(($SIZE / 65536 + 1))
-        SIZE=$(($SIZE * 65536))
-    fi
-    echo "$SIZE"
-}
 
 pushd $BINARIES_DIR
 
@@ -62,10 +55,19 @@ hdz-update_mbr mbr.bin 1 mbr.fex
 
 hdz-dragonsecboot -pack boot_package.cfg
 
-
 mkdir -p overlay/{upper,work}
 mkfs.jffs2 --eraseblock=65536 --pad=$OVERLAY_SIZE -d overlay/ -o overlay.jffs2
 rm -rf overlay
+
+UDISK_OFFSET="$(hdz-parser_mbr mbr.fex get_offset_by_name UDISK)"
+UDISK_OFFSET="$((1048576 + $UDISK_OFFSET * 512))"
+UDISK_SIZE=$(($FLASH_SIZE - $UDISK_OFFSET))
+UDISK_SIZE=$(align_size_down "$UDISK_SIZE")
+
+mkdir -p UDISK/
+echo $UDISK_SIZE > UDISK/size.txt
+mkfs.jffs2 --eraseblock=65536 --pad=$UDISK_SIZE -d UDISK/ -o UDISK.jffs2
+rm -rf UDISK
 
 cp $BOARD_DIR/genimage.cfg .
 cat >> genimage.cfg << EOF 
@@ -101,6 +103,11 @@ image flash.img {
     partition overlay {
 		image = "overlay.jffs2"
         size = $OVERLAY_SIZE 
+	}
+
+    partition UDISK {
+		image = "UDISK.jffs2"
+        size = $UDISK_SIZE 
 	}
 }
 EOF
