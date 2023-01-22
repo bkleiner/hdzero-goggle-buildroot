@@ -1,0 +1,13 @@
+#!/bin/bash
+set -ex
+
+FILE="$1"
+SIZE="$(du -sb "$FILE" | awk '{ print $1 }')"
+
+echo -n "258" > /sys/class/gpio/export || true
+echo -n "out" > /sys/class/gpio/gpio258/direction || true
+
+echo -n "1" > /sys/class/gpio/gpio258/value
+mtd_debug erase /dev/mtd8 0 16777216
+mtd_debug write /dev/mtd8 0 "$SIZE" "$FILE"
+echo -n "0" > /sys/class/gpio/gpio258/value

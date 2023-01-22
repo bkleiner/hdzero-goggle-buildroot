@@ -1,0 +1,35 @@
+#!/bin/bash
+set -ex
+
+echo -n "131" > /sys/class/gpio/export || true
+echo -n "out" > /sys/class/gpio/gpio131/direction || true
+
+echo -n "0" > /sys/class/gpio/gpio131/value
+
+FILE="$1"
+SIZE="$(du -sb "$FILE" | awk '{ print $1 }')"
+
+mtd_debug erase /dev/mtd0 0 1048576
+echo -n "spi0.0" > /sys/bus/spi/drivers/m25p80/unbind
+echo -n "spi0.0" > /sys/bus/spi/drivers/m25p80/bind
+
+mtd_debug erase /dev/mtd0 0 "$SIZE"
+mtd_debug write /dev/mtd0 0 "$SIZE" "$FILE"
+echo -n "spi0.0" > /sys/bus/spi/drivers/m25p80/unbind
+echo -n "spi0.0" > /sys/bus/spi/drivers/m25p80/bind
+
+
+echo -n "1" > /sys/class/gpio/gpio131/value
+usleep 500
+echo -n "0" > /sys/class/gpio/gpio131/value
+sleep 1
+
+echo -n "1" > /sys/class/gpio/gpio131/value
+usleep 500
+echo -n "0" > /sys/class/gpio/gpio131/value
+sleep 1
+
+echo -n "1" > /sys/class/gpio/gpio131/value
+usleep 500
+echo -n "0" > /sys/class/gpio/gpio131/value
+sleep 1

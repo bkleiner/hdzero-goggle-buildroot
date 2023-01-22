@@ -1,0 +1,26 @@
+#!/bin/bash
+set -ex
+
+FILE="$1"
+SIZE="$(du -sb "$FILE" | awk '{ print $1 }')"
+
+echo -n "224" > /sys/class/gpio/export || true
+echo -n "out" > /sys/class/gpio/gpio224/direction || true
+echo -n "228" > /sys/class/gpio/export || true
+echo -n "out" > /sys/class/gpio/gpio228/direction || true
+
+echo -n "0" > /sys/class/gpio/gpio224/value
+echo -n "1" > /sys/class/gpio/gpio228/value
+
+echo -n "spi1.0" > /sys/bus/spi/drivers/m25p80/bind
+mtd_debug erase /dev/mtd9 0 65536
+mtd_debug write /dev/mtd9 0 "$SIZE" "$FILE"
+echo -n "spi1.0" > /sys/bus/spi/drivers/m25p80/unbind
+
+echo -n "spi1.1" > /sys/bus/spi/drivers/m25p80/bind
+mtd_debug erase /dev/mtd9 0 65536
+mtd_debug write /dev/mtd9 0 "$SIZE" "$FILE"
+echo -n "spi1.1" > /sys/bus/spi/drivers/m25p80/unbind
+
+echo -n "1" > /sys/class/gpio/gpio224/value
+echo -n "0" > /sys/class/gpio/gpio228/value
