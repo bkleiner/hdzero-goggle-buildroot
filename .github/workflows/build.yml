@@ -14,6 +14,7 @@ jobs:
       - name: Build
         run: |
           bash build.sh hdzgoggle_flash_defconfig
+          bash build.sh -j1 source
           bash build.sh -j4
 
       - name: Upload Artifacts
@@ -33,6 +34,7 @@ jobs:
       - name: Build
         run: |
           bash build.sh hdzgoggle_sdcard_defconfig
+          bash build.sh -j1 source
           bash build.sh -j4
 
       - name: Upload Artifacts
