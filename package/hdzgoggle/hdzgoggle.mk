@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HDZGOGGLE_VERSION = softwinner-install-target
+HDZGOGGLE_VERSION = main
 HDZGOGGLE_SITE = $(call github,bkleiner,hdzero-goggle,$(HDZGOGGLE_VERSION))
 HDZGOGGLE_INSTALL_STAGING = NO
 HDZGOGGLE_INSTALL_TARGET = YES
