@@ -60,12 +60,12 @@ mkfs.jffs2 --eraseblock=65536 --pad=$OVERLAY_SIZE -d overlay/ -o overlay.jffs2
 rm -rf overlay
 
 UDISK_OFFSET="$(hdz-parser_mbr mbr.fex get_offset_by_name UDISK)"
-UDISK_OFFSET="$((1048576 + $UDISK_OFFSET * 512))"
+UDISK_OFFSET="$((16384 + 1048576 + $UDISK_OFFSET * 512))"
 UDISK_SIZE=$(($FLASH_SIZE - $UDISK_OFFSET))
 UDISK_SIZE=$(align_size_down "$UDISK_SIZE")
 
 mkdir -p UDISK/
-echo $UDISK_SIZE > UDISK/size.txt
+cp $COMMON_BOARD_DIR/rootfs_overlay/version UDISK/.version_lock
 mkfs.jffs2 --eraseblock=65536 --pad=$UDISK_SIZE -d UDISK/ -o UDISK.jffs2
 rm -rf UDISK
 
