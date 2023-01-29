@@ -16,7 +16,7 @@ ENV_SIZE=$(align_size "$(stat -c%s env.fex)")
 BOOT_SIZE=$(align_size "$(stat -c%s uImage)")
 ROOTFS_SIZE=$(align_size "$(stat -c%s rootfs.squashfs)")
 APP_SIZE=$(align_size "$(stat -c%s app.jffs2)")
-OVERLAY_SIZE=10485760
+OVERLAY_SIZE=4456448
 
 cat > mbr.fex << EOF
 [mbr]
@@ -55,20 +55,6 @@ hdz-update_mbr mbr.bin 1 mbr.fex
 
 hdz-dragonsecboot -pack boot_package.cfg
 
-mkdir -p overlay/{upper,work}
-mkfs.jffs2 --eraseblock=65536 --pad=$OVERLAY_SIZE -d overlay/ -o overlay.jffs2
-rm -rf overlay
-
-UDISK_OFFSET="$(hdz-parser_mbr mbr.fex get_offset_by_name UDISK)"
-UDISK_OFFSET="$((16384 + 1048576 + $UDISK_OFFSET * 512))"
-UDISK_SIZE=$(($FLASH_SIZE - $UDISK_OFFSET))
-UDISK_SIZE=$(align_size_down "$UDISK_SIZE")
-
-mkdir -p UDISK/
-cp $COMMON_BOARD_DIR/rootfs_overlay/version UDISK/.version_lock
-mkfs.jffs2 --eraseblock=65536 --pad=$UDISK_SIZE -d UDISK/ -o UDISK.jffs2
-rm -rf UDISK
-
 cp $BOARD_DIR/genimage.cfg .
 cat >> genimage.cfg << EOF 
 image flash.img {
@@ -93,21 +79,6 @@ image flash.img {
 	partition env {
 		image = "env.fex"
 		size = $ENV_SIZE
-	}
-
-	partition app {
-		image = "app.jffs2"
-        size = $APP_SIZE 
-	}
-
-    partition overlay {
-		image = "overlay.jffs2"
-        size = $OVERLAY_SIZE 
-	}
-
-    partition UDISK {
-		image = "UDISK.jffs2"
-        size = $UDISK_SIZE 
 	}
 }
 EOF
