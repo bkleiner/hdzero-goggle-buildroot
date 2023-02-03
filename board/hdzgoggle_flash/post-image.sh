@@ -15,7 +15,7 @@ hdz-u_boot_env_gen $BOARD_DIR/env.cfg env.fex
 ENV_SIZE=$(align_size "$(stat -c%s env.fex)")
 BOOT_SIZE=$(align_size "$(stat -c%s uImage)")
 ROOTFS_SIZE=$(align_size "$(stat -c%s rootfs.squashfs)")
-APP_SIZE=$(align_size "$(stat -c%s app.jffs2)")
+APP_SIZE=8388608
 OVERLAY_SIZE=4456448
 
 cat > mbr.fex << EOF
