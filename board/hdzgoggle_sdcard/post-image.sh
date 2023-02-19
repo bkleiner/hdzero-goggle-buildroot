@@ -13,7 +13,7 @@ hdz-u_boot_env_gen $BOARD_DIR/env.cfg env.fex
 KERNEL_SIZE=$(stat -c%s uImage)
 ROOTFS_SIZE=$(stat -c%s rootfs.ext2)
 ENV_SIZE=$(stat -c%s env.fex)
-APP_SIZE=$(stat -c%s app.squashfs)
+APP_SIZE=$(stat -c%s app.ext2)
 
 cat > mbr.fex << EOF
 [mbr]
