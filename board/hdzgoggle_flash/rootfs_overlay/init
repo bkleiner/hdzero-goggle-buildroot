@@ -1,10 +1,15 @@
 #!/bin/sh
 set -ex
 
+mkdir -p /dev/by-name
+for part in ${partitions//:/ }; do 
+   ln -fs "/dev/${part#*@}" "/dev/by-name/${part%@*}"
+done
+
 # mount overlay
-mount -t jffs2 /dev/mtdblock4 /mnt/app
-mount -t jffs2 /dev/mtdblock5 /overlay
-mount -t jffs2 /dev/mtdblock6 /mnt/UDISK
+mount -t jffs2 /dev/by-name/app /mnt/app
+mount -t jffs2 /dev/by-name/overlay /overlay
+mount -t jffs2 /dev/by-name/UDISK /mnt/UDISK
 mkdir -p /overlay/upper
 mkdir -p /overlay/work
 

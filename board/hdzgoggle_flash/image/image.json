@@ -1,0 +1,37 @@
+[
+    {
+        "filename": "mbr.fex",
+        "maintype": "12345678",
+        "subtype": "1234567890___MBR"
+    },
+    {
+        "filename": "dlinfo.fex",
+        "maintype": "12345678",
+        "subtype": "1234567890DLINFO"
+    },
+    {
+        "filename": "boot.fex",
+        "maintype": "RFSFAT16",
+        "subtype": "BOOT_FEX00000000"
+    },
+    {
+        "filename": "rootfs.fex",
+        "maintype": "RFSFAT16",
+        "subtype": "ROOTFS_FEX000000"
+    },
+    {
+        "filename": "env.fex",
+        "maintype": "RFSFAT16",
+        "subtype": "ENV_FEX000000000"
+    },
+    {
+        "filename": "app.fex",
+        "maintype": "RFSFAT16",
+        "subtype": "APP_FEX000000000"
+    },
+    {
+        "filename": "overlay.fex",
+        "maintype": "RFSFAT16",
+        "subtype": "OVERLAY_FEX00000"
+    }
+]

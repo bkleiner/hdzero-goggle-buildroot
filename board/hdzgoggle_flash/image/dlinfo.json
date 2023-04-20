@@ -1,0 +1,37 @@
+[
+    {
+        "name": "boot",
+        "dl_name": "BOOT_FEX00000000",
+        "vf_name": "VBOOT_FEX0000000",
+        "encrypt": false,
+        "verify": false
+    },
+    {
+        "name": "rootfs",
+        "dl_name": "ROOTFS_FEX000000",
+        "vf_name": "VROOTFS_FEX00000",
+        "encrypt": false,
+        "verify": false
+    },
+    {
+        "name": "env",
+        "dl_name": "ENV_FEX000000000",
+        "vf_name": "VENV_FEX00000000",
+        "encrypt": false,
+        "verify": false
+    },
+    {
+        "name": "app",
+        "dl_name": "APP_FEX000000000",
+        "vf_name": "VAPP_FEX00000000",
+        "encrypt": false,
+        "verify": false
+    },
+    {
+        "name": "overlay",
+        "dl_name": "OVERLAY_FEX00000",
+        "vf_name": "VOVERLAY_FEX0000",
+        "encrypt": false,
+        "verify": false
+    }
+]

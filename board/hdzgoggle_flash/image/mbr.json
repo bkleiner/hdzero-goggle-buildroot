@@ -1,0 +1,32 @@
+[
+    {
+        "classname": "DISK",
+        "name": "boot",
+        "user_type": 32768
+    },
+    {
+        "classname": "DISK",
+        "name": "rootfs",
+        "user_type": 32768
+    },
+    {
+        "classname": "DISK",
+        "name": "env",
+        "user_type": 32768
+    },
+    {
+        "classname": "DISK",
+        "name": "app",
+        "user_type": 32768
+    },
+    {
+        "classname": "DISK",
+        "name": "overlay",
+        "user_type": 32768
+    },
+    {
+        "classname": "DISK",
+        "name": "UDISK",
+        "user_type": 33024
+    }
+]
