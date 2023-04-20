@@ -20,8 +20,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: flash.img
-          path: output/images/flash.img
+          name: HDZG_OS.bin
+          path: output/images/HDZG_OS.bin
 
   build-sdcard:
     runs-on: ubuntu-latest
